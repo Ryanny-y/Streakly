@@ -20,7 +20,7 @@ import todolist.ConnectionDb;
  */
 public class SingleTask extends javax.swing.JPanel {
 
-    private ConnectionDb conDb = new ConnectionDb();
+    private final ConnectionDb conDb = new ConnectionDb();
     
     private TaskContainer container;
     private int id;
@@ -52,14 +52,18 @@ public class SingleTask extends javax.swing.JPanel {
     
     private void completeTask() {
         String query = "UPDATE todos set status = ? WHERE ID = ? AND name = ?";
+        String streakQuery = "UPDATE streak SET count = count + 1;";
         
         try (Connection con = conDb.getConnection();
-             PreparedStatement pstmt = con.prepareStatement(query)){
+             PreparedStatement pstmt = con.prepareStatement(query);
+             PreparedStatement streakPstmt = con.prepareStatement(streakQuery)) {
             pstmt.setString(1, "completed");
             pstmt.setInt(2, id);
             pstmt.setString(3, name);
             
             pstmt.executeUpdate();
+            streakPstmt.executeUpdate();
+
             container.refetchTasks();
         } catch (SQLException ex) {
             Logger.getLogger(SingleTask.class.getName()).log(Level.SEVERE, null, ex);
@@ -128,7 +132,6 @@ public class SingleTask extends javax.swing.JPanel {
 
     private void status_iconActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_status_iconActionPerformed
         // TODO add your handling code here:
-        System.out.println("Click");
         completeTask();
     }//GEN-LAST:event_status_iconActionPerformed
 

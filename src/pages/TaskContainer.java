@@ -15,6 +15,7 @@ import java.sql.ResultSet;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import todolist.TaskModel;
@@ -36,8 +37,7 @@ public class TaskContainer extends javax.swing.JPanel {
         String query = "SELECT * FROM todos WHERE status = ?";
         ArrayList<TaskModel> tasks = new ArrayList<>(); // List to store TaskModel objects
 
-        try (Connection con = connDb.getConnection(); 
-            PreparedStatement pstmt = con.prepareStatement(query)) {
+        try (Connection con = connDb.getConnection(); PreparedStatement pstmt = con.prepareStatement(query)) {
             pstmt.setString(1, "pending");
             ResultSet rs = pstmt.executeQuery();
 
@@ -54,10 +54,12 @@ public class TaskContainer extends javax.swing.JPanel {
         } catch (SQLException ex) {
             Logger.getLogger(TaskContainer.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        
+        
+        Collections.reverse(tasks);
         return tasks;
     }
-    
+
     protected void refetchTasks() {
         removeAll();
         revalidate();
@@ -72,7 +74,7 @@ public class TaskContainer extends javax.swing.JPanel {
         gbc.anchor = GridBagConstraints.NORTHWEST; // Align to the top-left
 
         ArrayList<TaskModel> tasks = (ArrayList<TaskModel>) fetchTasks();
-        
+
         int row = 0;
         for (int i = 0; i < tasks.size(); i++) {
             gbc.gridy = row;

@@ -5,6 +5,13 @@ import java.awt.Dimension;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.JTextField;
+import todolist.ConnectionDb;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -12,6 +19,8 @@ import javax.swing.JTextField;
  */
 public class TodoPage extends javax.swing.JFrame {
 
+    private final ConnectionDb conDb = new ConnectionDb();
+    
     public TodoPage() {
         initComponents();
         getContentPane().setBackground(Color.WHITE);
@@ -63,17 +72,17 @@ public class TodoPage extends javax.swing.JFrame {
         add_field.setText("Type Here");
         add_field.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 1));
         add_field.setOpaque(true);
-        add_field.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                add_fieldActionPerformed(evt);
-            }
-        });
 
         add_btn.setBackground(new java.awt.Color(58, 187, 189));
         add_btn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         add_btn.setForeground(new java.awt.Color(255, 255, 255));
         add_btn.setText("Add Task");
         add_btn.setBorder(null);
+        add_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                add_btnActionPerformed(evt);
+            }
+        });
 
         jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
         jScrollPane1.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
@@ -115,9 +124,28 @@ public class TodoPage extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void add_fieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add_fieldActionPerformed
+    private void add_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add_btnActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_add_fieldActionPerformed
+        String taskName = add_field.getText();
+        if(taskName.isBlank() || taskName.equals("Type here")) {
+            JOptionPane.showMessageDialog(null, "Field must not be empty!", "Empty Field", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        String query = "INSERT INTO todos(name) VALUES (?)";
+        
+        try (Connection con = conDb.getConnection();
+             PreparedStatement pstmt = con.prepareStatement(query)){
+            pstmt.setString(1, taskName);
+            
+            pstmt.executeUpdate();
+            taskContainer1.refetchTasks();
+            add_field.setText("");
+        } catch (SQLException ex) {
+            Logger.getLogger(TodoPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_add_btnActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton add_btn;

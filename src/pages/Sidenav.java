@@ -33,8 +33,9 @@ public class Sidenav extends javax.swing.JPanel {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        todo_list_btn = new javax.swing.JButton();
-        todo_list_btn1 = new javax.swing.JButton();
+        todo_list = new javax.swing.JButton();
+        streak = new javax.swing.JButton();
+        completed = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -42,31 +43,45 @@ public class Sidenav extends javax.swing.JPanel {
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("STREAKLY");
 
-        todo_list_btn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        todo_list_btn.setForeground(new java.awt.Color(255, 255, 255));
-        todo_list_btn.setText("Todo-List");
-        todo_list_btn.setBorder(null);
-        todo_list_btn.setBorderPainted(false);
-        todo_list_btn.setContentAreaFilled(false);
-        todo_list_btn.setFocusPainted(false);
-        todo_list_btn.setFocusable(false);
-        todo_list_btn.addActionListener(new java.awt.event.ActionListener() {
+        todo_list.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        todo_list.setForeground(new java.awt.Color(255, 255, 255));
+        todo_list.setText("Todo-List");
+        todo_list.setBorder(null);
+        todo_list.setBorderPainted(false);
+        todo_list.setContentAreaFilled(false);
+        todo_list.setFocusPainted(false);
+        todo_list.setFocusable(false);
+        todo_list.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                todo_list_btnActionPerformed(evt);
+                todo_listActionPerformed(evt);
             }
         });
 
-        todo_list_btn1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        todo_list_btn1.setForeground(new java.awt.Color(255, 255, 255));
-        todo_list_btn1.setText("Streak");
-        todo_list_btn1.setBorder(null);
-        todo_list_btn1.setBorderPainted(false);
-        todo_list_btn1.setContentAreaFilled(false);
-        todo_list_btn1.setFocusPainted(false);
-        todo_list_btn1.setFocusable(false);
-        todo_list_btn1.addActionListener(new java.awt.event.ActionListener() {
+        streak.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        streak.setForeground(new java.awt.Color(255, 255, 255));
+        streak.setText("Streak");
+        streak.setBorder(null);
+        streak.setBorderPainted(false);
+        streak.setContentAreaFilled(false);
+        streak.setFocusPainted(false);
+        streak.setFocusable(false);
+        streak.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                todo_list_btn1ActionPerformed(evt);
+                streakActionPerformed(evt);
+            }
+        });
+
+        completed.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        completed.setForeground(new java.awt.Color(255, 255, 255));
+        completed.setText("Completed To-do's");
+        completed.setBorder(null);
+        completed.setBorderPainted(false);
+        completed.setContentAreaFilled(false);
+        completed.setFocusPainted(false);
+        completed.setFocusable(false);
+        completed.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                completedActionPerformed(evt);
             }
         });
 
@@ -77,9 +92,10 @@ public class Sidenav extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(todo_list_btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(todo_list, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
-                    .addComponent(todo_list_btn1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(streak, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(completed, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -88,31 +104,36 @@ public class Sidenav extends javax.swing.JPanel {
                 .addGap(16, 16, 16)
                 .addComponent(jLabel1)
                 .addGap(35, 35, 35)
-                .addComponent(todo_list_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(todo_list, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(todo_list_btn1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(244, Short.MAX_VALUE))
+                .addComponent(streak, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(completed, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(190, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void todo_list_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_todo_list_btnActionPerformed
-        // TODO add your handling code here:
+    private void todo_listActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_todo_listActionPerformed
         JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
         topFrame.dispose();
         new TodoPage();
-    }//GEN-LAST:event_todo_list_btnActionPerformed
+    }//GEN-LAST:event_todo_listActionPerformed
 
-    private void todo_list_btn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_todo_list_btn1ActionPerformed
-        // TODO add your handling code here:
+    private void streakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_streakActionPerformed
         JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
         topFrame.dispose();
         new StreakPage();
-    }//GEN-LAST:event_todo_list_btn1ActionPerformed
+    }//GEN-LAST:event_streakActionPerformed
+
+    private void completedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_completedActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_completedActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton completed;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JButton todo_list_btn;
-    private javax.swing.JButton todo_list_btn1;
+    private javax.swing.JButton streak;
+    private javax.swing.JButton todo_list;
     // End of variables declaration//GEN-END:variables
 }
