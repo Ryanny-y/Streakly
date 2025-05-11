@@ -72,7 +72,19 @@ public class SingleTask extends javax.swing.JPanel {
     }
     
     private void removeTask() {
+         String query = "DELETE FROM todos WHERE id = ? AND name = ?";
         
+        try (Connection con = conDb.getConnection();
+             PreparedStatement pstmt = con.prepareStatement(query)) {
+            pstmt.setInt(1, id);
+            pstmt.setString(2, name);
+            
+            pstmt.executeUpdate();
+
+            container.refetchTasks();
+        } catch (SQLException ex) {
+            Logger.getLogger(SingleTask.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
         
     @SuppressWarnings("unchecked")
@@ -104,6 +116,11 @@ public class SingleTask extends javax.swing.JPanel {
         remove_icon.setContentAreaFilled(false);
         remove_icon.setFocusPainted(false);
         remove_icon.setFocusable(false);
+        remove_icon.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                remove_iconActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -134,6 +151,11 @@ public class SingleTask extends javax.swing.JPanel {
         // TODO add your handling code here:
         completeTask();
     }//GEN-LAST:event_status_iconActionPerformed
+
+    private void remove_iconActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_remove_iconActionPerformed
+        // TODO add your handling code here:
+        removeTask();
+    }//GEN-LAST:event_remove_iconActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
