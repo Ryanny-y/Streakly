@@ -127,6 +127,9 @@ public class Sidenav extends javax.swing.JPanel {
 
     private void completedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_completedActionPerformed
         // TODO add your handling code here:
+        JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        topFrame.dispose();
+        new Completed();
     }//GEN-LAST:event_completedActionPerformed
 
 

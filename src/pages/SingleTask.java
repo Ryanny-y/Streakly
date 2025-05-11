@@ -24,7 +24,7 @@ public class SingleTask extends javax.swing.JPanel {
     
     private TaskContainer container;
     private int id;
-    private String name;
+    private String name, status;
     public SingleTask() {
         initComponents();
         
@@ -32,10 +32,15 @@ public class SingleTask extends javax.swing.JPanel {
         setIcon(remove_icon, "src/images/remove.png");
     }
     
-    public SingleTask(TaskContainer container, int id, String name) {
+    public SingleTask(TaskContainer container, String status, int id, String name) {
         initComponents();
+        this.status = status;
+        if(status.equals("pending")) {
+           setIcon(status_icon, "src/images/circle.png"); 
+        } else {
+           setIcon(status_icon, "src/images/check.png");
+        }
         
-        setIcon(status_icon, "src/images/circle.png");
         setIcon(remove_icon, "src/images/remove.png");
         this.container = container;
         this.id = id;
@@ -58,6 +63,27 @@ public class SingleTask extends javax.swing.JPanel {
              PreparedStatement pstmt = con.prepareStatement(query);
              PreparedStatement streakPstmt = con.prepareStatement(streakQuery)) {
             pstmt.setString(1, "completed");
+            pstmt.setInt(2, id);
+            pstmt.setString(3, name);
+            
+            pstmt.executeUpdate();
+            streakPstmt.executeUpdate();
+
+            container.refetchTasks();
+        } catch (SQLException ex) {
+            Logger.getLogger(SingleTask.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    
+    private void uncompleteTask() {
+        String query = "UPDATE todos set status = ? WHERE ID = ? AND name = ?";
+        String streakQuery = "UPDATE streak SET count = count - 1;";
+        
+        try (Connection con = conDb.getConnection();
+             PreparedStatement pstmt = con.prepareStatement(query);
+             PreparedStatement streakPstmt = con.prepareStatement(streakQuery)) {
+            pstmt.setString(1, "pending");
             pstmt.setInt(2, id);
             pstmt.setString(3, name);
             
@@ -149,7 +175,12 @@ public class SingleTask extends javax.swing.JPanel {
 
     private void status_iconActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_status_iconActionPerformed
         // TODO add your handling code here:
-        completeTask();
+        if(status.equals("pending")) {
+           completeTask();
+        } else {
+           uncompleteTask();
+        }
+        
     }//GEN-LAST:event_status_iconActionPerformed
 
     private void remove_iconActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_remove_iconActionPerformed

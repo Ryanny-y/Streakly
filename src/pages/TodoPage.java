@@ -62,7 +62,7 @@ public class TodoPage extends javax.swing.JFrame {
         add_field = new javax.swing.JTextField();
         add_btn = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        taskContainer1 = new pages.TaskContainer();
+        taskContainer1 = new pages.TaskContainer("pending");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);

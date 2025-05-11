@@ -26,14 +26,22 @@ import todolist.TaskModel;
  */
 public class TaskContainer extends javax.swing.JPanel {
 
-    private ConnectionDb connDb = new ConnectionDb();
+    private final ConnectionDb connDb = new ConnectionDb();
+
+    private String status;
 
     public TaskContainer() {
         initComponents();
         addComponents();
     }
 
-    private ArrayList<TaskModel> fetchTasks() {
+    public TaskContainer(String status) {
+        initComponents();
+        this.status = status;
+        addComponents();
+    }
+
+    private ArrayList<TaskModel> fetchPendingTasks() {
         String query = "SELECT * FROM todos WHERE status = ?";
         ArrayList<TaskModel> tasks = new ArrayList<>(); // List to store TaskModel objects
 
@@ -44,9 +52,9 @@ public class TaskContainer extends javax.swing.JPanel {
             while (rs.next()) {
                 int id = rs.getInt("id");
                 String name = rs.getString("name");
-                String status = rs.getString("status");
+                String inner_status = rs.getString("status");
 
-                TaskModel task = new TaskModel(id, name, status);
+                TaskModel task = new TaskModel(id, name, inner_status);
 
                 tasks.add(task);
             }
@@ -54,8 +62,33 @@ public class TaskContainer extends javax.swing.JPanel {
         } catch (SQLException ex) {
             Logger.getLogger(TaskContainer.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
+
+        Collections.reverse(tasks);
+        return tasks;
+    }
+    
+    private ArrayList<TaskModel> fetchCompletedTasks() {
+        String query = "SELECT * FROM todos WHERE status = ?";
+        ArrayList<TaskModel> tasks = new ArrayList<>(); // List to store TaskModel objects
+
+        try (Connection con = connDb.getConnection(); PreparedStatement pstmt = con.prepareStatement(query)) {
+            pstmt.setString(1, "completed");
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                String inner_status = rs.getString("status");
+
+                TaskModel task = new TaskModel(id, name, inner_status);
+
+                tasks.add(task);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(TaskContainer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         Collections.reverse(tasks);
         return tasks;
     }
@@ -73,13 +106,13 @@ public class TaskContainer extends javax.swing.JPanel {
         gbc.weighty = 0; // Prevent components from expanding vertically
         gbc.anchor = GridBagConstraints.NORTHWEST; // Align to the top-left
 
-        ArrayList<TaskModel> tasks = (ArrayList<TaskModel>) fetchTasks();
+        ArrayList<TaskModel> tasks = status.equals("pending") ? (ArrayList<TaskModel>) fetchPendingTasks() : (ArrayList<TaskModel>) fetchCompletedTasks();
 
         int row = 0;
         for (int i = 0; i < tasks.size(); i++) {
             gbc.gridy = row;
 
-            SingleTask newTask = new SingleTask(this, tasks.get(i).getId(), tasks.get(i).getName());
+            SingleTask newTask = new SingleTask(this, status, tasks.get(i).getId(), tasks.get(i).getName());
             newTask.setPreferredSize(new Dimension(650, 43));
             add(newTask, gbc);
             row++;
