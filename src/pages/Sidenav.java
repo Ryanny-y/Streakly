@@ -34,6 +34,7 @@ public class Sidenav extends javax.swing.JPanel {
 
         jLabel1 = new javax.swing.JLabel();
         todo_list = new javax.swing.JButton();
+        milestone = new javax.swing.JButton();
         streak = new javax.swing.JButton();
         completed = new javax.swing.JButton();
 
@@ -54,6 +55,20 @@ public class Sidenav extends javax.swing.JPanel {
         todo_list.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 todo_listActionPerformed(evt);
+            }
+        });
+
+        milestone.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        milestone.setForeground(new java.awt.Color(255, 255, 255));
+        milestone.setText("Milestone");
+        milestone.setBorder(null);
+        milestone.setBorderPainted(false);
+        milestone.setContentAreaFilled(false);
+        milestone.setFocusPainted(false);
+        milestone.setFocusable(false);
+        milestone.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                milestoneActionPerformed(evt);
             }
         });
 
@@ -95,7 +110,8 @@ public class Sidenav extends javax.swing.JPanel {
                     .addComponent(todo_list, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
                     .addComponent(streak, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(completed, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(completed, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(milestone, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -105,11 +121,13 @@ public class Sidenav extends javax.swing.JPanel {
                 .addComponent(jLabel1)
                 .addGap(35, 35, 35)
                 .addComponent(todo_list, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(milestone, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(streak, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(completed, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(190, Short.MAX_VALUE))
+                .addContainerGap(154, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -132,10 +150,18 @@ public class Sidenav extends javax.swing.JPanel {
         new Completed();
     }//GEN-LAST:event_completedActionPerformed
 
+    private void milestoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_milestoneActionPerformed
+        // TODO add your handling code here:
+        JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        topFrame.dispose();
+        new MileStone();
+    }//GEN-LAST:event_milestoneActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton completed;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton milestone;
     private javax.swing.JButton streak;
     private javax.swing.JButton todo_list;
     // End of variables declaration//GEN-END:variables

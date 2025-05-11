@@ -3,22 +3,15 @@ package pages;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Image;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JTextField;
 import todolist.ConnectionDb;
-import todolist.TaskModel;
 
 /**
  *
@@ -35,9 +28,10 @@ public class StreakPage extends javax.swing.JFrame {
         setSize(900, 500);
         setTitle("Dailist");
         setPreferredSize(new Dimension(900, 500));
+        fetchCompletedTasksCount();
+
         setLocationRelativeTo(null);
         setIcon(streak, "src/images/star.png");
-        fetchCompletedTasksCount();
         setVisible(true);
     }
     
@@ -57,7 +51,7 @@ public class StreakPage extends javax.swing.JFrame {
 
             while (rs.next()) {
                 int count = rs.getInt("completedCount");
-                streak.setText("#" + String.valueOf(count));
+                streak.setText("#"+String.valueOf(count));
             }
 
         } catch (SQLException ex) {
