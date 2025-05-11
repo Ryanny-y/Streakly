@@ -7,6 +7,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.JTextField;
 import todolist.ConnectionDb;
 import java.sql.Connection;
+import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -20,7 +21,7 @@ import javax.swing.JOptionPane;
 public class TodoPage extends javax.swing.JFrame {
 
     private final ConnectionDb conDb = new ConnectionDb();
-    
+
     public TodoPage() {
         initComponents();
         getContentPane().setBackground(Color.WHITE);
@@ -29,8 +30,9 @@ public class TodoPage extends javax.swing.JFrame {
         setTitle("Dailist");
         setPreferredSize(new Dimension(900, 500));
         setLocationRelativeTo(null);
+        generate_task_btn.setBackground(Color.WHITE);
         jScrollPane1.getViewport().setOpaque(false);
-        
+
         fieldListener(add_field);
         setVisible(true);
     }
@@ -39,21 +41,21 @@ public class TodoPage extends javax.swing.JFrame {
         field.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                if(field.getText().equals("Type Here")) {
+                if (field.getText().equals("Type Here")) {
                     field.setText("");
                 }
             }
 
             @Override
             public void keyReleased(KeyEvent e) {
-                if(field.getText().isBlank()) {
+                if (field.getText().isBlank()) {
                     field.setText("Type Here");
                 }
             }
-            
+
         });
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -63,6 +65,7 @@ public class TodoPage extends javax.swing.JFrame {
         add_btn = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         taskContainer1 = new pages.TaskContainer("pending");
+        generate_task_btn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -72,6 +75,11 @@ public class TodoPage extends javax.swing.JFrame {
         add_field.setText("Type Here");
         add_field.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 1));
         add_field.setOpaque(true);
+        add_field.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                add_fieldActionPerformed(evt);
+            }
+        });
 
         add_btn.setBackground(new java.awt.Color(58, 187, 189));
         add_btn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -92,6 +100,18 @@ public class TodoPage extends javax.swing.JFrame {
         taskContainer1.setOpaque(false);
         jScrollPane1.setViewportView(taskContainer1);
 
+        generate_task_btn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        generate_task_btn.setForeground(new java.awt.Color(58, 187, 189));
+        generate_task_btn.setText("Generate Task");
+        generate_task_btn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(58, 187, 189)));
+        generate_task_btn.setFocusPainted(false);
+        generate_task_btn.setFocusable(false);
+        generate_task_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                generate_task_btnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -103,18 +123,23 @@ public class TodoPage extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(add_field, javax.swing.GroupLayout.PREFERRED_SIZE, 553, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(add_btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 697, Short.MAX_VALUE))
+                        .addComponent(add_btn, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(generate_task_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(sidenav1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(sidenav1, javax.swing.GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(add_btn, javax.swing.GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE)
                     .addComponent(add_field))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(generate_task_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1)
                 .addContainerGap())
@@ -127,29 +152,47 @@ public class TodoPage extends javax.swing.JFrame {
     private void add_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add_btnActionPerformed
         // TODO add your handling code here:
         String taskName = add_field.getText();
-        if(taskName.isBlank() || taskName.equals("Type here")) {
+        if (taskName.isBlank() || taskName.equals("Type here")) {
             JOptionPane.showMessageDialog(null, "Field must not be empty!", "Empty Field", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
+
         String query = "INSERT INTO todos(name) VALUES (?)";
-        
-        try (Connection con = conDb.getConnection();
-             PreparedStatement pstmt = con.prepareStatement(query)){
+
+        try (Connection con = conDb.getConnection(); PreparedStatement pstmt = con.prepareStatement(query)) {
             pstmt.setString(1, taskName);
-            
+
             pstmt.executeUpdate();
             taskContainer1.refetchTasks();
             add_field.setText("");
         } catch (SQLException ex) {
             Logger.getLogger(TodoPage.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }//GEN-LAST:event_add_btnActionPerformed
+
+    private void add_fieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add_fieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_add_fieldActionPerformed
+
+    private void generate_task_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generate_task_btnActionPerformed
+        // TODO add your handling code here:
+        String query = "INSERT INTO todos(name) VALUES (\"Brush teeth before bed\"), (\"Eat dinner\"), (\"Do chores\"), (\"Eat lunch\"), (\"Take a bath\"), (\"Eat breakfast\"), (\"Stretch or do light exercise\"), (\"Wash face\"), (\"Make the bed\")";
+
+        try (Connection con = conDb.getConnection(); Statement stmt = con.createStatement()) {
+
+            stmt.executeUpdate(query);
+            taskContainer1.refetchTasks();
+        } catch (SQLException ex) {
+            Logger.getLogger(TodoPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_generate_task_btnActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton add_btn;
     private javax.swing.JTextField add_field;
+    private javax.swing.JButton generate_task_btn;
     private javax.swing.JScrollPane jScrollPane1;
     private pages.Sidenav sidenav1;
     private pages.TaskContainer taskContainer1;

@@ -31,9 +31,13 @@
                   <Group type="102" attributes="0">
                       <Component id="add_field" min="-2" pref="553" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="add_btn" max="32767" attributes="0"/>
+                      <Component id="add_btn" pref="138" max="32767" attributes="0"/>
                   </Group>
-                  <Component id="jScrollPane1" pref="697" max="32767" attributes="0"/>
+                  <Component id="jScrollPane1" max="32767" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <Component id="generate_task_btn" min="-2" pref="150" max="-2" attributes="0"/>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -41,13 +45,15 @@
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="sidenav1" alignment="0" max="32767" attributes="0"/>
+          <Component id="sidenav1" alignment="0" pref="500" max="32767" attributes="0"/>
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Component id="add_btn" pref="42" max="32767" attributes="0"/>
                   <Component id="add_field" max="32767" attributes="0"/>
               </Group>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="generate_task_btn" min="-2" pref="29" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="jScrollPane1" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
@@ -74,6 +80,9 @@
         </Property>
         <Property name="opaque" type="boolean" value="true"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="add_fieldActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="add_btn">
       <Properties>
@@ -123,5 +132,28 @@
         </Container>
       </SubComponents>
     </Container>
+    <Component class="javax.swing.JButton" name="generate_task_btn">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Segoe UI" size="14" style="1"/>
+        </Property>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="bd" green="bb" red="3a" type="rgb"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Generate Task"/>
+        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+          <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+            <LineBorder>
+              <Color PropertyName="color" blue="bd" green="bb" red="3a" type="rgb"/>
+            </LineBorder>
+          </Border>
+        </Property>
+        <Property name="focusPainted" type="boolean" value="false"/>
+        <Property name="focusable" type="boolean" value="false"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="generate_task_btnActionPerformed"/>
+      </Events>
+    </Component>
   </SubComponents>
 </Form>

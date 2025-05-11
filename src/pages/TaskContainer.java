@@ -28,7 +28,7 @@ public class TaskContainer extends javax.swing.JPanel {
 
     private final ConnectionDb connDb = new ConnectionDb();
 
-    private String status;
+    private String status = "pending";
 
     public TaskContainer() {
         initComponents();

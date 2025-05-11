@@ -24,11 +24,11 @@ import todolist.TaskModel;
  *
  * @author wendell
  */
-public class StreakPage extends javax.swing.JFrame {
+public class MileStone extends javax.swing.JFrame {
 
     private final ConnectionDb conDb = new ConnectionDb();
     
-    public StreakPage() {
+    public MileStone() {
         initComponents();
         getContentPane().setBackground(Color.WHITE);
 
@@ -74,7 +74,6 @@ public class StreakPage extends javax.swing.JFrame {
         streak = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(900, 500));
         setResizable(false);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 25)); // NOI18N
